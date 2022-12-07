@@ -7,6 +7,7 @@ import torchinfo
 from utils import DirectorySetup, create_dataloaders
 from models import RockPaperScissor_Model_V1
 from trainer import Trainer
+from predict import Prediction
 import config
 
 
@@ -36,6 +37,11 @@ trainer_obj.plot_model_results()
 
 trainer_obj.save("model_v1.pt")
 
-loaded_model_v1 = trainer_obj.load("model_v1.pt")
+loaded_model_v1 = torch.load("model_v1.pt")
 torchinfo.summary(loaded_model_v1, input_size=[1, 3, config.IMAGE_SIZE, config.IMAGE_SIZE])
+
+pred = Prediction.from_file("rockpaperscissors/paper/04l5I8TqdzF9WDMJ.png")
+pred = pred.predict(loaded_model_v1)
+
+print(pred.results())
 
